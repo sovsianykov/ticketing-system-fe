@@ -25,11 +25,11 @@ export function WelcomeAuthPanel() {
             <TabsList>
                 <TabsTrigger value="register">
                     <UserPlus />
-                    Регистрация
+                    Sign Up
                 </TabsTrigger>
                 <TabsTrigger value="login">
                     <LogIn />
-                    Вход
+                    Sign In
                 </TabsTrigger>
             </TabsList>
 

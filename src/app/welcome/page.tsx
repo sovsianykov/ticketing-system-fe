@@ -16,8 +16,7 @@ export default function WelcomePage() {
                         Welcome
                     </h1>
                     <p className="text-sm text-muted-foreground">
-                        Войдите в аккаунт или создайте новый, чтобы продолжить
-                        работу с тикетами.
+                        Sign in or create an account to start working with tickets.
                     </p>
                 </div>
 

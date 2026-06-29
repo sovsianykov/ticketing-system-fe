@@ -28,18 +28,18 @@ export default function DashboardPage() {
                     </h1>
                     <p className="text-sm text-muted-foreground">
                         {user?.email
-                            ? `Вы вошли как ${user.email}`
-                            : "Добро пожаловать в систему тикетов"}
+                            ? `Signed in as ${user.email}`
+                            : "Welcome to the ticketing system"}
                     </p>
                 </div>
                 <Button variant="outline" onClick={handleLogout}>
-                    Выйти
+                    Sign Out
                 </Button>
             </div>
 
             <div className="rounded-xl border bg-card p-6 text-sm text-muted-foreground">
-                Kanban board и остальные разделы будут добавлены на следующих
-                этапах.
+                Kanban board and other sections will be added in the next
+                stages.
             </div>
         </div>
     );

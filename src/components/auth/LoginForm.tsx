@@ -14,8 +14,8 @@ import { cn } from "@/lib/utils";
 import { useAuthStore } from "../../../store/auth.store";
 
 const loginSchema = z.object({
-    email: z.string().email("Введите корректный email"),
-    password: z.string().min(6, "Пароль должен содержать минимум 6 символов"),
+    email: z.string().email("Please enter a valid email"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -51,7 +51,7 @@ export function LoginForm({ onSuccess, className }: LoginFormProps) {
             onSuccess?.();
         } catch (err) {
             setError(
-                err instanceof Error ? err.message : "Не удалось выполнить вход"
+                err instanceof Error ? err.message : "Failed to sign in"
             );
         }
     };
@@ -92,7 +92,7 @@ export function LoginForm({ onSuccess, className }: LoginFormProps) {
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="login-password">Пароль</Label>
+                <Label htmlFor="login-password">Password</Label>
                 <div className="relative">
                     <Lock className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
@@ -109,7 +109,7 @@ export function LoginForm({ onSuccess, className }: LoginFormProps) {
                         onClick={() => setShowPassword((value) => !value)}
                         className="absolute top-1/2 right-2.5 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                         aria-label={
-                            showPassword ? "Скрыть пароль" : "Показать пароль"
+                            showPassword ? "Hide password" : "Show password"
                         }
                     >
                         {showPassword ? (
@@ -128,7 +128,7 @@ export function LoginForm({ onSuccess, className }: LoginFormProps) {
 
             <Button type="submit" className="w-full" disabled={isSubmitting}>
                 <LogIn />
-                {isSubmitting ? "Вход..." : "Войти"}
+                {isSubmitting ? "Signing in..." : "Sign In"}
             </Button>
         </form>
     );
