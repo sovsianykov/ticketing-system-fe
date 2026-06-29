@@ -1,0 +1,7 @@
+---
+alwaysApply: true
+---
+local backend baseUrl: http://localhost:8080/api/v1
+
+endpoints: 'users' , 'tickets', 'comments', 'teams'
+

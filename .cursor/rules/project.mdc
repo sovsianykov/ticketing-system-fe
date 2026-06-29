@@ -1,0 +1,22 @@
+---
+alwaysApply: true
+---
+# General project rules
+
+- Always inspect the existing implementation before making changes.
+- Never overwrite working code.
+- Reuse existing components and services.
+- Follow the existing architecture.
+- If requirements are ambiguous, stop and ask questions.
+- Do not introduce duplicate logic.
+- Keep code production-ready.
+
+· Sign-up screen.
+
+· Login screen.
+
+· Kanban board with team selector.
+
+· Ticket create/edit/details view.
+
+· Team management screen.

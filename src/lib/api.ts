@@ -1,9 +1,10 @@
 import axios from "axios";
-import {useAuthStore} from "../../store/auth.store";
+
+import { useAuthStore } from "../../store/auth.store";
 
 export const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
-    withCredentials: true, // refresh token cookie
+    baseURL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080/api/v1",
+    withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
@@ -21,16 +22,43 @@ api.interceptors.response.use(
     async (error) => {
         const original = error.config;
 
-        if (error.response?.status === 401 && !original._retry) {
+        if (
+            error.response?.status === 401 &&
+            original &&
+            !original._retry &&
+            !original.url?.includes("/auth/")
+        ) {
             original._retry = true;
 
-            const { data } = await api.post("/auth/refresh");
+            try {
+                const res = await fetch("/api/auth/refresh", {
+                    method: "POST",
+                    credentials: "include",
+                });
+                const data = await res.json();
 
-            useAuthStore.getState().setAccessToken(data.accessToken);
+                if (!res.ok) {
+                    throw new Error(data?.message ?? "Refresh failed");
+                }
 
-            original.headers.Authorization = `Bearer ${data.accessToken}`;
+                const accessToken = data.accessToken as string;
+                useAuthStore.getState().setAccessToken(accessToken);
 
-            return api(original);
+                if (data.user) {
+                    useAuthStore
+                        .getState()
+                        .setSession(accessToken, data.user);
+                }
+
+                original.headers.Authorization = `Bearer ${accessToken}`;
+                return api(original);
+            } catch {
+                useAuthStore.getState().logout();
+                if (typeof window !== "undefined") {
+                    window.location.href = "/welcome";
+                }
+                return Promise.reject(error);
+            }
         }
 
         return Promise.reject(error);
