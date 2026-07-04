@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 
-import {
-    callBackendAuth,
-    mapAuthResponse,
-    setRefreshTokenCookie,
-} from "@/lib/auth-server";
+import { mapAuthResponse } from "@/lib/auth-server";
+
+const BACKEND_URL =
+    process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080/api/v1";
 
 export async function POST(request: Request) {
     const body = (await request.json()) as {
@@ -19,28 +18,37 @@ export async function POST(request: Request) {
         );
     }
 
-    const result = await callBackendAuth("/auth/login", {
-        email: body.email,
-        password: body.password,
+    // Call backend
+    const res = await fetch(`${BACKEND_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            email: body.email,
+            password: body.password,
+        }),
     });
 
-    if (!result.ok) {
-        const message = Array.isArray(result.message)
-            ? result.message.join(", ")
-            : result.message;
+    const data = await res.json().catch(() => null);
 
-        return NextResponse.json({ message }, { status: result.status });
+    if (!res.ok) {
+        const message = Array.isArray(data?.message)
+            ? data.message.join(", ")
+            : data?.message ?? "Authentication failed";
+
+        return NextResponse.json({ message }, { status: res.status });
     }
 
-    if (!result.data.refresh_token) {
-        return NextResponse.json(
-            { message: "Refresh token missing from backend response" },
-            { status: 500 }
-        );
-    }
+    // Backend sets HttpOnly Cookie with refreshToken
+    // Forward Set-Cookie header from backend response to client
+    const response = NextResponse.json(mapAuthResponse(data));
 
-    const response = NextResponse.json(mapAuthResponse(result.data));
-    setRefreshTokenCookie(response, result.data.refresh_token);
+    const setCookieHeader = res.headers.get("set-cookie");
+
+    if (setCookieHeader) {
+        // Fix the Path to / so cookie is sent to all routes
+        const fixedCookie = setCookieHeader.replace(/Path=\/api\/v1\/auth/, 'Path=/');
+        response.headers.set("set-cookie", fixedCookie);
+    }
 
     return response;
 }

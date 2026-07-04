@@ -9,11 +9,10 @@ import { KanbanBoard } from "@/components/KanbanBoard/KanbanBoard";
 
 export default function DashboardPage() {
     const router = useRouter();
-    const accessToken = useAuthStore((s) => s.accessToken);
     const logoutStore = useAuthStore((s) => s.logout);
 
     const handleLogout = async () => {
-        await logout(accessToken);
+        await logout();
         logoutStore();
         router.push("/welcome");
         router.refresh();

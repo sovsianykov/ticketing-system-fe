@@ -24,3 +24,7 @@ export type BackendRefreshResponse = {
     refresh_token?: string;
     user?: User;
 };
+
+export type BackendRegisterResponse = {
+    message: string;
+};

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Lock, Mail, UserPlus } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, User, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,10 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { register as registerUser } from "@/lib/auth";
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "../../../store/auth.store";
 
 const registerSchema = z
     .object({
+        name: z.string().min(2, "Name must be at least 2 characters"),
         email: z.string().email("Please enter a valid email"),
         password: z
             .string()
@@ -34,7 +34,6 @@ type RegisterFormProps = {
 };
 
 export function RegisterForm({ onSuccess, className }: RegisterFormProps) {
-    const setSession = useAuthStore((s) => s.setSession);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -46,6 +45,7 @@ export function RegisterForm({ onSuccess, className }: RegisterFormProps) {
     } = useForm<RegisterFormValues>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
+            name: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -56,11 +56,11 @@ export function RegisterForm({ onSuccess, className }: RegisterFormProps) {
         setError(null);
 
         try {
-            const session = await registerUser({
+            await registerUser({
+                name: values.name,
                 email: values.email,
                 password: values.password,
             });
-            setSession(session.accessToken, session.user);
             onSuccess?.();
         } catch (err) {
             setError(
@@ -84,6 +84,27 @@ export function RegisterForm({ onSuccess, className }: RegisterFormProps) {
                     {error}
                 </div>
             )}
+
+            <div className="space-y-2">
+                <Label htmlFor="register-name">Name</Label>
+                <div className="relative">
+                    <User className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                        id="register-name"
+                        type="text"
+                        autoComplete="name"
+                        placeholder="John Doe"
+                        className="pl-8"
+                        aria-invalid={Boolean(errors.name)}
+                        {...register("name")}
+                    />
+                </div>
+                {errors.name && (
+                    <p className="text-sm text-destructive">
+                        {errors.name.message}
+                    </p>
+                )}
+            </div>
 
             <div className="space-y-2">
                 <Label htmlFor="register-email">Email</Label>

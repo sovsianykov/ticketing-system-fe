@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server";
 
-import {
-    callBackendAuth,
-    mapAuthResponse,
-    setRefreshTokenCookie,
-} from "@/lib/auth-server";
+import { callBackendRegister } from "@/lib/auth-server";
 
 export async function POST(request: Request) {
     const body = (await request.json()) as {
         email?: string;
         password?: string;
+        name?: string;
     };
 
     if (!body.email || !body.password) {
@@ -19,9 +16,10 @@ export async function POST(request: Request) {
         );
     }
 
-    const result = await callBackendAuth("/auth/register", {
+    const result = await callBackendRegister({
         email: body.email,
         password: body.password,
+        name: body.name,
     });
 
     if (!result.ok) {
@@ -32,15 +30,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ message }, { status: result.status });
     }
 
-    if (!result.data.refresh_token) {
-        return NextResponse.json(
-            { message: "Refresh token missing from backend response" },
-            { status: 500 }
-        );
-    }
-
-    const response = NextResponse.json(mapAuthResponse(result.data));
-    setRefreshTokenCookie(response, result.data.refresh_token);
-
-    return response;
+    // Backend returns only { message: string } for registration
+    // No tokens are returned - user must verify email first
+    return NextResponse.json({ message: result.data.message });
 }

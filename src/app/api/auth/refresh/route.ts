@@ -1,14 +1,12 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-import {
-    callBackendRefresh,
-    clearRefreshTokenCookie,
-    getRefreshTokenFromCookies,
-    setRefreshTokenCookie,
-} from "@/lib/auth-server";
+import { callBackendRefresh } from "@/lib/auth-server";
+import { REFRESH_TOKEN_COOKIE } from "@/lib/token";
 
 export async function POST() {
-    const refreshToken = await getRefreshTokenFromCookies();
+    const cookieStore = await cookies();
+    const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE)?.value;
 
     if (!refreshToken) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -17,14 +15,13 @@ export async function POST() {
     const result = await callBackendRefresh(refreshToken);
 
     if (!result.ok) {
-        const response = NextResponse.json(
+        return NextResponse.json(
             { message: result.message },
             { status: result.status }
         );
-        clearRefreshTokenCookie(response);
-        return response;
     }
 
+    // Backend returns new accessToken and sets new refreshToken in HttpOnly Cookie
     const payload = {
         accessToken: result.data.access_token,
         user: result.data.user,
@@ -32,8 +29,11 @@ export async function POST() {
 
     const response = NextResponse.json(payload);
 
-    if (result.data.refresh_token) {
-        setRefreshTokenCookie(response, result.data.refresh_token);
+    // Forward the Set-Cookie header from backend response
+    if (result.setCookie) {
+        // Fix the Path to / so cookie is sent to all routes
+        const fixedCookie = result.setCookie.replace(/Path=\/api\/v1\/auth/, 'Path=/');
+        response.headers.set("set-cookie", fixedCookie);
     }
 
     return response;

@@ -3,6 +3,7 @@ import type { AuthResponse } from "@/types/auth";
 type Credentials = {
     email: string;
     password: string;
+    name?: string;
 };
 
 async function parseAuthResponse(res: Response): Promise<AuthResponse> {
@@ -35,7 +36,7 @@ export async function login(credentials: Credentials): Promise<AuthResponse> {
 
 export async function register(
     credentials: Credentials
-): Promise<AuthResponse> {
+): Promise<{ message: string }> {
     const res = await fetch("/api/auth/register", {
         method: "POST",
         credentials: "include",
@@ -43,7 +44,20 @@ export async function register(
         body: JSON.stringify(credentials),
     });
 
-    return parseAuthResponse(res);
+    const data = await res.json();
+
+    if (!res.ok) {
+        const message =
+            typeof data?.message === "string"
+                ? data.message
+                : Array.isArray(data?.message)
+                  ? data.message.join(", ")
+                  : "Request failed";
+
+        throw new Error(message);
+    }
+
+    return data as { message: string };
 }
 
 export async function refreshAccessToken(): Promise<string> {
@@ -61,12 +75,9 @@ export async function refreshAccessToken(): Promise<string> {
     return data.accessToken as string;
 }
 
-export async function logout(accessToken: string | null): Promise<void> {
+export async function logout(): Promise<void> {
     await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
-        headers: accessToken
-            ? { Authorization: `Bearer ${accessToken}` }
-            : undefined,
     }).catch(() => undefined);
 }

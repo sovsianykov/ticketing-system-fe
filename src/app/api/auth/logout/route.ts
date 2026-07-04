@@ -1,28 +1,28 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-import {
-    callBackendLogout,
-    clearRefreshTokenCookie,
-    getRefreshTokenFromCookies,
-} from "@/lib/auth-server";
+import { callBackendLogout } from "@/lib/auth-server";
+import { REFRESH_TOKEN_COOKIE } from "@/lib/token";
 
-export async function POST(request: Request) {
-    const accessToken = request.headers
-        .get("Authorization")
-        ?.replace(/^Bearer\s+/i, "");
+export async function POST() {
+    const cookieStore = await cookies();
+    const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE)?.value;
 
-    if (accessToken) {
-        await callBackendLogout(accessToken);
+    // Call backend with refreshToken
+    // Backend will revoke token and clear the cookie
+    if (refreshToken) {
+        await callBackendLogout(refreshToken);
     }
 
+    // Clear the cookie on frontend
     const response = NextResponse.json({ success: true });
-    clearRefreshTokenCookie(response);
-
-    const refreshToken = await getRefreshTokenFromCookies();
-    if (refreshToken && !accessToken) {
-        // Cookie may still exist if header was not sent; ensure it is cleared.
-        clearRefreshTokenCookie(response);
-    }
+    response.cookies.set(REFRESH_TOKEN_COOKIE, "", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 0,
+    });
 
     return response;
 }

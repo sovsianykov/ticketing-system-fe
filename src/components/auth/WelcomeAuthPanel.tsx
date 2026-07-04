@@ -15,8 +15,13 @@ import {
 export function WelcomeAuthPanel() {
     const router = useRouter();
 
-    const handleSuccess = () => {
+    const handleLoginSuccess = () => {
         router.push("/dashboard");
+        router.refresh();
+    };
+
+    const handleRegisterSuccess = () => {
+        router.push("/check-email");
         router.refresh();
     };
 
@@ -34,11 +39,11 @@ export function WelcomeAuthPanel() {
             </TabsList>
 
             <TabsContent value="register">
-                <RegisterForm onSuccess={handleSuccess} />
+                <RegisterForm onSuccess={handleRegisterSuccess} />
             </TabsContent>
 
             <TabsContent value="login">
-                <LoginForm onSuccess={handleSuccess} />
+                <LoginForm onSuccess={handleLoginSuccess} />
             </TabsContent>
         </Tabs>
     );
