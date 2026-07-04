@@ -13,14 +13,14 @@ import {
   closestCorners,
 } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { Search, Plus, Filter } from "lucide-react";
+import { Search, Filter } from "lucide-react";
 
 import { ticketsApi } from "@/lib/tickets";
 import { COLUMN_CONFIG, TICKET_TYPES, type Ticket, type TicketState, type TicketType } from "@/types/tickets";
 import { KanbanColumn } from "./KanbanColumn";
 import { TicketCard } from "./TicketCard";
 import { TeamForm } from "@/components/TeamForm/TeamForm";
-import { Button } from "@/components/ui/button";
+import { TicketForm } from "@/components/TicketForm/TicketForm";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -200,10 +200,7 @@ export function KanbanBoard() {
             </Select>
             <TeamForm onSuccess={handleTeamCreated} />
           </div>
-          <Button className="mr-[10%]">
-            <Plus className="mr-2 h-4 w-4" />
-            New Ticket
-          </Button>
+          <TicketForm teamId={selectedTeam} onSuccess={() => refetch()} />
         </div>
 
         {/* Filters */}

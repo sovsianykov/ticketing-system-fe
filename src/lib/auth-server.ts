@@ -72,8 +72,10 @@ export async function callBackendRegister(
 export async function callBackendRefresh(refreshToken: string) {
     const res = await fetch(`${BACKEND_URL}/auth/refresh`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refreshToken }),
+        headers: {
+            "Content-Type": "application/json",
+            "Cookie": `refreshToken=${refreshToken}; Path=/api/v1/auth; HttpOnly; SameSite=Lax`,
+        },
     });
 
     const data = await res.json().catch(() => null);

@@ -8,11 +8,15 @@ export async function POST() {
     const cookieStore = await cookies();
     const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE)?.value;
 
+    console.log('Refresh token from cookie:', refreshToken);
+
     if (!refreshToken) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const result = await callBackendRefresh(refreshToken);
+
+    console.log('Backend refresh result:', result);
 
     if (!result.ok) {
         return NextResponse.json(
