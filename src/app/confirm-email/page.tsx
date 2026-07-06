@@ -5,10 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { CheckCircle2 } from "lucide-react";
+import { useAuthStore } from "../../../store/auth.store";
+import type { AuthResponse } from "@/types/auth";
 
 export default function ConfirmEmailPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const setSession = useAuthStore((s) => s.setSession);
     const token = searchParams.get("token");
     const [status, setStatus] = useState<"loading" | "success" | "error">(
         token ? "loading" : "error"
@@ -32,13 +35,14 @@ export default function ConfirmEmailPage() {
                     body: JSON.stringify({ token }),
                 });
 
-                const data = await res.json();
+                const data = await res.json() as AuthResponse;
 
                 if (!res.ok) {
-                    throw new Error(data.message || "Verification failed");
+                    throw new Error((data as unknown as { message: string }).message || "Verification failed");
                 }
 
                 if (isMounted) {
+                    setSession(data.accessToken, data.user);
                     setStatus("success");
                 }
             } catch (err) {
@@ -58,7 +62,7 @@ export default function ConfirmEmailPage() {
         return () => {
             isMounted = false;
         };
-    }, [token, router]);
+    }, [token, router, setSession]);
 
     const handleGoToDashboard = () => {
         router.push("/dashboard");

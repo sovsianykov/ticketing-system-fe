@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { mapAuthResponse } from "@/lib/auth-server";
+
 const BACKEND_URL =
     process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080/api/v1";
 
@@ -29,5 +31,13 @@ export async function POST(request: Request) {
         return NextResponse.json({ message }, { status: res.status });
     }
 
-    return NextResponse.json({ message: data.message });
+    const response = NextResponse.json(mapAuthResponse(data));
+
+    const setCookieHeader = res.headers.get("set-cookie");
+    if (setCookieHeader) {
+        const fixedCookie = setCookieHeader.replace(/Path=\/api\/v1\/auth/, "Path=/");
+        response.headers.set("set-cookie", fixedCookie);
+    }
+
+    return response;
 }
