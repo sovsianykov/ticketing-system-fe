@@ -121,6 +121,10 @@ export function RegisterForm({ onSuccess, className }: RegisterFormProps) {
                 email: values.email,
                 password: values.password,
             });
+            sessionStorage.setItem(
+                "pending_login",
+                JSON.stringify({ email: values.email, password: values.password })
+            );
             saveAttempt({ name: values.name, email: values.email });
             setAttempts(loadAttempts());
             onSuccess?.();

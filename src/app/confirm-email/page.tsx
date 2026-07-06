@@ -42,7 +42,30 @@ export default function ConfirmEmailPage() {
                 }
 
                 if (isMounted) {
-                    setSession(data.accessToken, data.user);
+                    let autoLoggedIn = false;
+                    try {
+                        const raw = sessionStorage.getItem("pending_login");
+                        if (raw) {
+                            const { email, password } = JSON.parse(raw) as { email: string; password: string };
+                            const loginRes = await fetch("/api/auth/login", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ email, password }),
+                            });
+                            const loginData = await loginRes.json() as AuthResponse;
+                            if (loginRes.ok) {
+                                setSession(loginData.accessToken, loginData.user);
+                                autoLoggedIn = true;
+                            }
+                            sessionStorage.removeItem("pending_login");
+                        }
+                    } catch {
+                        // auto-login failed silently — user can log in manually
+                    }
+                    if (autoLoggedIn) {
+                        router.push("/dashboard");
+                        return;
+                    }
                     setStatus("success");
                 }
             } catch (err) {
@@ -66,7 +89,6 @@ export default function ConfirmEmailPage() {
 
     const handleGoToDashboard = () => {
         router.push("/dashboard");
-        router.refresh();
     };
 
     return (

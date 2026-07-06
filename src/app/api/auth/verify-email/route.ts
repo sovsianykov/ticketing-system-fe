@@ -25,6 +25,8 @@ export async function POST(request: Request) {
 
     const data = await res.json().catch(() => null);
 
+    console.log("[verify-email] backend status:", res.status, "data:", JSON.stringify(data));
+
     if (!res.ok) {
         const message =
             (data as { message?: string })?.message ?? "Verification failed";
