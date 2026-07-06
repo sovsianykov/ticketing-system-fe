@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 import { REFRESH_TOKEN_COOKIE } from "@/lib/token";
 
-const PROTECTED_PREFIXES = ["/dashboard"];
+const PROTECTED_PREFIXES = ["/dashboard", "/tickets"];
 const AUTH_PAGES = ["/welcome", "/login", "/register", "/check-email"];
 
 export function middleware(request: NextRequest) {
@@ -37,5 +37,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/dashboard/:path*", "/welcome", "/login", "/register", "/check-email"],
+    matcher: ["/dashboard/:path*", "/tickets/:path*", "/tickets", "/welcome", "/login", "/register", "/check-email"],
 };

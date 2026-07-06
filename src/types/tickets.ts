@@ -20,28 +20,32 @@ export type Team = {
 export type Ticket = {
   id: string;
   title: string;
+  body: string | null;
   type: TicketType;
   state: TicketState;
-  epic: Epic | null;
-  team: Team;
-  modified_at: string;
-  created_at: string;
+  teamId: string;
+  epicId: string | null;
+  createdById: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type CreateTicketDto = {
   title: string;
+  body?: string;
   type: TicketType;
   state: TicketState;
-  epic_id?: string | null;
-  team_id: string;
+  epicId?: string | null;
+  teamId: string;
 };
 
 export type UpdateTicketDto = {
   title?: string;
+  body?: string;
   type?: TicketType;
   state?: TicketState;
-  epic_id?: string | null;
-  team_id?: string;
+  epicId?: string | null;
+  teamId?: string;
 };
 
 export const COLUMN_CONFIG: Record<TicketState, string> = {
@@ -53,3 +57,17 @@ export const COLUMN_CONFIG: Record<TicketState, string> = {
 };
 
 export const TICKET_TYPES: TicketType[] = ["bug", "feature", "fix"];
+
+export type TicketComment = {
+  id: string;
+  ticketId: string;
+  authorId: string;
+  body: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CreateCommentDto = {
+  ticketId: string;
+  body: string;
+};

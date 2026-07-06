@@ -27,17 +27,14 @@ export async function POST() {
 
     // Backend returns new accessToken and sets new refreshToken in HttpOnly Cookie
     const payload = {
-        accessToken: result.data.access_token,
+        accessToken: result.data.accessToken,
         user: result.data.user,
     };
 
     const response = NextResponse.json(payload);
 
-    // Forward the Set-Cookie header from backend response
     if (result.setCookie) {
-        // Fix the Path to / so cookie is sent to all routes
-        const fixedCookie = result.setCookie.replace(/Path=\/api\/v1\/auth/, 'Path=/');
-        response.headers.set("set-cookie", fixedCookie);
+        response.headers.set("set-cookie", result.setCookie);
     }
 
     return response;

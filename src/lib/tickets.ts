@@ -1,5 +1,5 @@
 import { api } from "./api";
-import type { Ticket, CreateTicketDto, UpdateTicketDto, Team, Epic } from "@/types/tickets";
+import type { Ticket, CreateTicketDto, UpdateTicketDto, Team, Epic, TicketComment, CreateCommentDto } from "@/types/tickets";
 
 export const ticketsApi = {
   // Get all tickets for a team
@@ -52,6 +52,18 @@ export const ticketsApi = {
   // Get all epics
   getEpics: async (): Promise<Epic[]> => {
     const response = await api.get<Epic[]>("/epics");
+    return response.data;
+  },
+
+  // Get comments for a ticket
+  getComments: async (ticketId: string): Promise<TicketComment[]> => {
+    const response = await api.get<TicketComment[]>(`/comments/ticket/${ticketId}`);
+    return response.data;
+  },
+
+  // Create a comment
+  createComment: async (data: CreateCommentDto): Promise<TicketComment> => {
+    const response = await api.post<TicketComment>("/comments", data);
     return response.data;
   },
 };

@@ -20,8 +20,7 @@ export type BackendAuthResponse = {
 };
 
 export type BackendRefreshResponse = {
-    access_token: string;
-    refresh_token?: string;
+    accessToken: string;
     user?: User;
 };
 

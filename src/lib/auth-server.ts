@@ -74,7 +74,7 @@ export async function callBackendRefresh(refreshToken: string) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Cookie": `refreshToken=${refreshToken}; Path=/api/v1/auth; HttpOnly; SameSite=Lax`,
+            "Cookie": `refreshToken=${refreshToken}`,
         },
     });
 

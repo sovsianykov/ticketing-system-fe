@@ -1,0 +1,61 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - heading "Welcome" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Sign in or create an account to start working with tickets.
+    - generic [ref=e7]:
+      - tablist [ref=e8]:
+        - tab "Sign Up" [selected] [ref=e9]:
+          - img [ref=e10]
+          - text: Sign Up
+        - tab "Sign In" [ref=e13]:
+          - img [ref=e14]
+          - text: Sign In
+      - tabpanel "Sign Up" [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]:
+            - text: Name
+            - generic [ref=e20]:
+              - img
+              - textbox "Name" [ref=e21]:
+                - /placeholder: John Doe
+          - generic [ref=e22]:
+            - text: Email
+            - generic [ref=e23]:
+              - img
+              - textbox "Email" [ref=e24]:
+                - /placeholder: you@company.com
+          - generic [ref=e25]:
+            - text: Password
+            - generic [ref=e26]:
+              - img
+              - textbox "Password" [ref=e27]:
+                - /placeholder: ••••••••
+              - button "Show password" [ref=e28]:
+                - img [ref=e29]
+            - generic [ref=e32]:
+              - paragraph [ref=e33]: Password criteria
+              - generic [ref=e36]: Minimum 8 characters
+              - generic [ref=e39]: At least one uppercase (capital) letter
+              - generic [ref=e42]: At least one special character
+              - generic [ref=e43]:
+                - generic "Criteria not yet met" [ref=e44]
+                - generic [ref=e45]: All criteria met
+          - generic [ref=e46]:
+            - text: Confirm Password
+            - generic [ref=e47]:
+              - img
+              - textbox "Confirm Password" [ref=e48]:
+                - /placeholder: ••••••••
+              - button "Show password" [ref=e49]:
+                - img [ref=e50]
+          - button "Create Account" [ref=e53]:
+            - img
+            - text: Create Account
+  - generic [ref=e54]:
+    - img [ref=e56]
+    - button "Open Tanstack query devtools" [ref=e104] [cursor=pointer]:
+      - img [ref=e105]
+  - button "Open Next.js Dev Tools" [ref=e158] [cursor=pointer]:
+    - img [ref=e159]
+  - alert [ref=e162]

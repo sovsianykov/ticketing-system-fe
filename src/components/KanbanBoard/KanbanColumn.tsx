@@ -1,7 +1,6 @@
 "use client";
 
 import { useDroppable } from "@dnd-kit/core";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import type { Ticket, TicketState } from "@/types/tickets";
 import { TicketCard } from "./TicketCard";
 
@@ -30,18 +29,16 @@ export function KanbanColumn({ state, title, tickets }: KanbanColumnProps) {
         </span>
       </div>
 
-      <SortableContext items={tickets.map((t) => t.id)} strategy={verticalListSortingStrategy}>
-        <div className="space-y-2">
-          {tickets.map((ticket) => (
-            <TicketCard key={ticket.id} ticket={ticket} />
-          ))}
-          {tickets.length === 0 && (
-            <div className="text-center py-8 text-sm text-muted-foreground">
-              No tickets
-            </div>
-          )}
-        </div>
-      </SortableContext>
+      <div className="space-y-2">
+        {tickets.map((ticket) => (
+          <TicketCard key={ticket.id} ticket={ticket} />
+        ))}
+        {tickets.length === 0 && (
+          <div className="text-center py-8 text-sm text-muted-foreground">
+            No tickets
+          </div>
+        )}
+      </div>
     </div>
   );
 }

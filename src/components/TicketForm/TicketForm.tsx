@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { TiptapEditor } from "@/components/tickets/TiptapEditor";
 
 interface TicketFormProps {
   teamId: string;
@@ -34,6 +35,7 @@ interface TicketFormProps {
 export function TicketForm({ teamId, onSuccess }: TicketFormProps) {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
   const [type, setType] = useState<TicketType>("feature");
   const [state, setState] = useState<TicketState>("new");
   const [epicId, setEpicId] = useState<string | null>(null);
@@ -52,12 +54,14 @@ export function TicketForm({ teamId, onSuccess }: TicketFormProps) {
     try {
       await ticketsApi.createTicket({
         title,
+        body,
         type,
         state,
-        epic_id: epicId,
-        team_id: teamId,
+        epicId: epicId || null,
+        teamId: teamId,
       });
       setTitle("");
+      setBody("");
       setType("feature");
       setState("new");
       setEpicId(null);
@@ -78,7 +82,7 @@ export function TicketForm({ teamId, onSuccess }: TicketFormProps) {
           New Ticket
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[560px]">
         <DialogHeader>
           <DialogTitle>Create New Ticket</DialogTitle>
           <DialogDescription>
@@ -95,6 +99,14 @@ export function TicketForm({ teamId, onSuccess }: TicketFormProps) {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter ticket title"
                 required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>Description</Label>
+              <TiptapEditor
+                value={body}
+                onChange={setBody}
+                placeholder="Describe the ticket..."
               />
             </div>
             <div className="grid gap-2">

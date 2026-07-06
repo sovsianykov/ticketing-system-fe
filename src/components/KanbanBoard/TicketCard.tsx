@@ -2,6 +2,7 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useRouter } from "next/navigation";
 import type { Ticket } from "@/types/tickets";
 import { Badge } from "@/components/ui/badge";
 
@@ -11,6 +12,7 @@ interface TicketCardProps {
 }
 
 export function TicketCard({ ticket, isDragging = false }: TicketCardProps) {
+  const router = useRouter();
   const {
     attributes,
     listeners,
@@ -43,24 +45,32 @@ export function TicketCard({ ticket, isDragging = false }: TicketCardProps) {
       ref={setNodeRef}
       style={style}
       {...attributes}
-      {...listeners}
-      className={`rounded-lg border bg-card p-4 shadow-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow ${
-        isDragging || isSortableDragging ? "opacity-50 shadow-lg" : ""
+      className={`rounded-lg border bg-card shadow-sm transition-shadow ${
+        isDragging || isSortableDragging ? "opacity-50 shadow-lg" : "hover:shadow-md"
       }`}
     >
-      <div className="space-y-2">
+      {/* drag handle covers the whole card */}
+      <div
+        {...listeners}
+        className="p-4 cursor-grab active:cursor-grabbing space-y-2"
+        onClick={() => {
+          if (!isSortableDragging) {
+            router.push(`/tickets/${ticket.id}`);
+          }
+        }}
+      >
         <div className="flex items-start justify-between gap-2">
           <h4 className="font-medium text-sm line-clamp-2 flex-1">{ticket.title}</h4>
         </div>
-        
+
         <div className="flex items-center gap-2 flex-wrap">
           <Badge className={`text-xs ${getTypeColor(ticket.type)}`}>
             {ticket.type.charAt(0).toUpperCase() + ticket.type.slice(1)}
           </Badge>
-          
-          {ticket.epic && (
+
+          {ticket.epicId && (
             <Badge variant="outline" className="text-xs">
-              {ticket.epic.title}
+              Epic
             </Badge>
           )}
         </div>

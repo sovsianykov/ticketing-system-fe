@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { CheckCircle2 } from "lucide-react";
 import { useAuthStore } from "../../../store/auth.store";
 import type { AuthResponse } from "@/types/auth";
 
-export default function ConfirmEmailPage() {
+function ConfirmEmailContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const setSession = useAuthStore((s) => s.setSession);
@@ -92,6 +92,7 @@ export default function ConfirmEmailPage() {
     };
 
     return (
+
         <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-10">
             <div className="w-full max-w-md rounded-xl border bg-card p-8 shadow-sm text-center">
                 {status === "loading" && (
@@ -154,5 +155,13 @@ export default function ConfirmEmailPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function ConfirmEmailPage() {
+    return (
+        <Suspense>
+            <ConfirmEmailContent />
+        </Suspense>
     );
 }

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useAuthStore } from "../../../store/auth.store";
 import {
   DndContext,
   DragEndEvent,
@@ -31,11 +32,33 @@ import {
 } from "@/components/ui/select";
 
 export function KanbanBoard() {
-  const [selectedTeam, setSelectedTeam] = useState<string>("");
+  const user = useAuthStore((s) => s.user);
+  const storageKey = user ? `selectedTeam:${user.id}` : null;
+
+  const [selectedTeam, setSelectedTeam] = useState<string>(() => {
+    if (typeof window === "undefined" || !storageKey) return "";
+    return localStorage.getItem(storageKey) ?? "";
+  });
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<TicketType | "all">("all");
   const [filterEpic, setFilterEpic] = useState<string>("all");
   const [activeTicket, setActiveTicket] = useState<Ticket | null>(null);
+
+  // Restore saved team once user is known (handles delayed auth bootstrap)
+  useEffect(() => {
+    if (!storageKey || selectedTeam) return;
+    const saved = localStorage.getItem(storageKey);
+    if (saved) setSelectedTeam(saved);
+  }, [storageKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!storageKey) return;
+    if (selectedTeam) {
+      localStorage.setItem(storageKey, selectedTeam);
+    } else {
+      localStorage.removeItem(storageKey);
+    }
+  }, [selectedTeam, storageKey]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -69,7 +92,7 @@ export function KanbanBoard() {
     return tickets.filter((ticket) => {
       const matchesSearch = ticket.title.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesType = filterType === "all" || ticket.type === filterType;
-      const matchesEpic = filterEpic === "all" || ticket.epic?.id === filterEpic;
+      const matchesEpic = filterEpic === "all" || ticket.epicId === filterEpic;
       return matchesSearch && matchesType && matchesEpic;
     });
   }, [tickets, searchQuery, filterType, filterEpic]);
@@ -90,10 +113,10 @@ export function KanbanBoard() {
       }
     });
 
-    // Sort each column by modified_at (newest first)
+    // Sort each column by updatedAt (newest first)
     Object.keys(grouped).forEach((state) => {
-      grouped[state as TicketState].sort((a, b) => 
-        new Date(b.modified_at).getTime() - new Date(a.modified_at).getTime()
+      grouped[state as TicketState].sort((a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       );
     });
 
