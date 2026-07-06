@@ -77,10 +77,12 @@ export function TicketForm({ teamId, onSuccess }: TicketFormProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
+      <div className='mr-[15%]'>
         <Button>
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus className="mr-2 h-4 w-4 " />
           New Ticket
         </Button>
+      </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[560px]">
         <DialogHeader>
