@@ -32,7 +32,7 @@ interface TicketFormProps {
   onSuccess: () => void;
 }
 
-export function TicketForm({ teamId, onSuccess }: TicketFormProps) {
+export function TicketForm({ teamId, onSuccess }: Readonly<TicketFormProps>) {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");

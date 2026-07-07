@@ -74,6 +74,13 @@ export function KanbanBoard() {
     queryFn: ticketsApi.getTeams,
   });
 
+  // Auto-select first team if nothing is saved
+  useEffect(() => {
+    if (!selectedTeam && teams.length > 0) {
+      setSelectedTeam(teams[0].id);
+    }
+  }, [teams, selectedTeam]);
+
   // Fetch epics
   const { data: epics = [] } = useQuery({
     queryKey: ["epics"],
@@ -138,10 +145,16 @@ export function KanbanBoard() {
     if (!over) return;
 
     const ticketId = active.id as string;
-    const newState = over.id as TicketState;
+    const overId = over.id as string;
+
+    // over.id can be either a column state or a ticket id (when dropped onto an existing ticket)
+    const STATES = Object.keys(ticketsByState) as TicketState[];
+    const newState: TicketState = STATES.includes(overId as TicketState)
+      ? (overId as TicketState)
+      : (tickets.find((t) => t.id === overId)?.state as TicketState);
 
     const ticket = tickets.find((t) => t.id === ticketId);
-    if (!ticket || ticket.state === newState) return;
+    if (!ticket || !newState || ticket.state === newState) return;
 
     try {
       await ticketsApi.updateTicketState(ticketId, newState);
@@ -156,31 +169,6 @@ export function KanbanBoard() {
   const handleTeamCreated = (teamId: string) => {
     setSelectedTeam(teamId);
   };
-
-  if (!selectedTeam) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="w-full max-w-md rounded-xl border bg-card p-6 shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Select a Team</h2>
-          <div className="flex items-center gap-2">
-            <Select value={selectedTeam} onValueChange={setSelectedTeam} >
-              <SelectTrigger>
-                <SelectValue placeholder="Choose a team to view tickets" />
-              </SelectTrigger>
-              <SelectContent>
-                {teams.map((team) => (
-                  <SelectItem key={team.id} value={team.id}>
-                    {team.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <TeamForm onSuccess={handleTeamCreated} />
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (isLoading) {
     return (
@@ -208,7 +196,6 @@ export function KanbanBoard() {
       <div className="mb-6 space-y-4">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-4 flex-1">
-            <h1 className="text-2xl font-semibold">Kanban Board</h1>
             <Select value={selectedTeam} onValueChange={setSelectedTeam}>
               <SelectTrigger className="w-[200px]">
                 <SelectValue placeholder="Select team" />

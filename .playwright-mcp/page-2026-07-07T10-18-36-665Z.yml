@@ -1,0 +1,61 @@
+- generic [active] [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - link "Logo Ticketing System Light" [ref=f1e3] [cursor=pointer]:
+      - /url: /dashboard
+      - img "Logo" [ref=f1e4]
+      - text: Ticketing System Light
+  - generic [ref=f1e6]:
+    - generic [ref=f1e7]:
+      - heading "Welcome" [level=1] [ref=f1e8]
+      - paragraph [ref=f1e9]: Sign in or create an account to start working with tickets.
+    - generic [ref=f1e10]:
+      - tablist [ref=f1e11]:
+        - tab "Sign Up" [selected] [ref=f1e12]:
+          - img [ref=f1e13]
+          - text: Sign Up
+        - tab "Sign In" [ref=f1e16]:
+          - img [ref=f1e17]
+          - text: Sign In
+      - tabpanel "Sign Up" [ref=f1e20]:
+        - generic [ref=f1e21]:
+          - generic [ref=f1e22]:
+            - text: Name
+            - generic [ref=f1e23]:
+              - img
+              - textbox "Name" [ref=f1e24]:
+                - /placeholder: John Doe
+          - generic [ref=f1e25]:
+            - text: Email
+            - generic [ref=f1e26]:
+              - img
+              - textbox "Email" [ref=f1e27]:
+                - /placeholder: you@company.com
+          - generic [ref=f1e28]:
+            - text: Password
+            - generic [ref=f1e29]:
+              - img
+              - textbox "Password" [ref=f1e30]:
+                - /placeholder: ••••••••
+              - button "Show password" [ref=f1e31]:
+                - img [ref=f1e32]
+            - generic [ref=f1e35]:
+              - paragraph [ref=f1e36]: Password criteria
+              - generic [ref=f1e39]: Minimum 8 characters
+              - generic [ref=f1e42]: At least one uppercase (capital) letter
+              - generic [ref=f1e45]: At least one special character
+              - generic [ref=f1e46]:
+                - generic "Criteria not yet met" [ref=f1e47]
+                - generic [ref=f1e48]: All criteria met
+          - generic [ref=f1e49]:
+            - text: Confirm Password
+            - generic [ref=f1e50]:
+              - img
+              - textbox "Confirm Password" [ref=f1e51]:
+                - /placeholder: ••••••••
+              - button "Show password" [ref=f1e52]:
+                - img [ref=f1e53]
+          - button "Create Account" [ref=f1e56]:
+            - img
+            - text: Create Account
+  - button "Open Next.js Dev Tools" [ref=f1e62] [cursor=pointer]:
+    - img [ref=f1e63]

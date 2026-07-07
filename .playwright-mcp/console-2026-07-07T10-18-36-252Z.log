@@ -1,0 +1,27 @@
+[     273ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[     325ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[     452ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:3000/api/auth/refresh:0
+[     455ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[     524ms] [LOG] [Fast Refresh] done in 191ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   34275ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   34276ms] [LOG] [UserAvatar] user: null @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   34277ms] [LOG] [UserAvatar] user: null @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   34301ms] [LOG] [Fast Refresh] done in 70ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97554ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97554ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97692ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97692ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97701ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97702ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97713ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97713ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97722ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97722ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97737ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97737ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97897ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   97897ms] [LOG] [UserAvatar] user: undefined @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   98061ms] [LOG] [AuthBootstrap] refresh data: {hasUser: false, hasToken: true} @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   98061ms] [LOG] [AuthBootstrap] JWT payload: {sub: ed8b08fe-a4db-4998-a36e-40b6f6700b90, email: swebproger@gmail.com, iat: 1783419614, exp: 1783420514} @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   98187ms] [LOG] [UserAvatar] user: {id: ed8b08fe-a4db-4998-a36e-40b6f6700b90, email: swebproger@gmail.com, name: Serhii Ovsianykov, isEmailVerified: true, verifiedAt: 2026-07-07T09:59:54.728Z} @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   98187ms] [LOG] [UserAvatar] user: {id: ed8b08fe-a4db-4998-a36e-40b6f6700b90, email: swebproger@gmail.com, name: Serhii Ovsianykov, isEmailVerified: true, verifiedAt: 2026-07-07T09:59:54.728Z} @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
